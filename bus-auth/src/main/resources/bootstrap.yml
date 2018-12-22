@@ -1,0 +1,20 @@
+server:
+  port: 8763
+spring:
+  profiles:
+    active: dev
+  application:
+    name: bus-auth
+  cloud:
+    config:
+      profile: ${spring.profiles.active}
+      label: master
+      discovery:
+        enabled: true
+        serviceId: bus-config
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    serviceUrl:
+      defaultZone: http://127.0.0.1:8761/eureka/

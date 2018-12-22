@@ -1,0 +1,19 @@
+server:
+  port: 8001
+turbine:
+  app-config: bus-upms-service,bus-example-service
+  aggregator:
+    clusterConfig: default
+  clusterNameExpression: new String("default")
+  combine-host: true
+  instanceUrlSuffix:
+    default: actuator/hystrix.stream
+#spring boot admin monitor
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: ALWAYS

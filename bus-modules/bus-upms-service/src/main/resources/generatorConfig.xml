@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<!-- 配置生成器 -->
+<!--执行generator插件生成文件的命令： call mvn mybatis-generator:generate -e -->
+<generatorConfiguration>
+
+    <!--导入属性配置-->
+    <properties resource="generator.properties"/>
+
+    <!-- 指定数据库驱动的jdbc驱动jar包的位置 -->
+    <classPathEntry location="${jdbc.driver.location}"/>
+
+    <!-- context 是逆向工程的主要配置信息 -->
+    <!-- id：起个名字 -->
+    <!-- targetRuntime：设置生成的文件适用于那个 mybatis 版本 -->
+    <!-- defaultModelType："flat" 大数据字段，不分表 -->
+    <context id="default" targetRuntime="MyBatis3" defaultModelType="flat">
+
+        <!-- 自动识别数据库关键字，默认false，如果设置为true -->
+        <!-- 根据SqlReservedWords中定义的关键字列表；一般保留默认值，遇到数据库关键字（Java关键字），使用columnOverride覆盖 -->
+        <property name="autoDelimitKeywords" value="true"/>
+
+        <!-- 生成的Java文件的编码 -->
+        <property name="javaFileEncoding" value="utf-8"/>
+
+        <!-- beginningDelimiter和endingDelimiter：指明数据库的用于标记数据库对象名的符号，比如ORACLE就是双引号，MYSQL默认是`反引号 -->
+        <property name="beginningDelimiter" value="`"/>
+        <property name="endingDelimiter" value="`"/>
+
+        <!-- 格式化java代码 -->
+        <property name="javaFormatter" value="org.mybatis.generator.api.dom.DefaultJavaFormatter"/>
+
+        <!-- 格式化XML代码 -->
+        <property name="xmlFormatter" value="org.mybatis.generator.api.dom.DefaultXmlFormatter"/>
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>
+        <plugin type="org.mybatis.generator.plugins.ToStringPlugin"/>
+
+        <!--optional,旨在创建class时，对注释进行控制-->
+        <commentGenerator>
+            <property name="suppressAllComments" value="true"/><!-- 是否取消注释 -->
+            <property name="suppressDate" value="false"/> <!-- 是否生成注释代时间戳-->
+        </commentGenerator>
+
+        <!--jdbc的数据库连接-->
+        <jdbcConnection driverClass="${jdbc.driver.name}"
+                        connectionURL="${jdbc.url}"
+                        userId="${jdbc.user}"
+                        password="${jdbc.password}"/>
+
+        <!--非必须，类型处理器，在数据库类型和java类型之间的转换控制-->
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="false"/><!-- 是否使用BigDecimal，false可自动转化以下类型（Long, Integer, Short, etc.） -->
+        </javaTypeResolver>
+
+        <!-- targetPackage：生成的实体类所在的包 -->
+        <!-- targetProject：生成的实体类所在的硬盘位置 -->
+        <javaModelGenerator targetPackage="${package.entity}" targetProject="${project}">
+            <property name="enableSubPackages" value="false"/><!-- 是否允许子包 -->
+            <property name="constructorBased" value="true"/> <!-- 是否对modal添加构造函数 -->
+            <property name="trimStrings" value="true"/><!-- 是否清理从数据库中查询出的字符串左右两边的空白字符 -->
+            <property name="immutable" value="false"/><!-- 建立modal对象是否不可改变 即生成的modal对象不会有setter方法，只有构造方法 -->
+        </javaModelGenerator>
+
+        <!-- targetPackage 和 targetProject：生成的 mapper .xml 文件的包和位置 -->
+        <sqlMapGenerator targetPackage="mappers" targetProject="${resources}">
+            <!-- 针对数据库的一个配置，是否把 schema 作为字包名 -->
+            <property name="enableSubPackages" value="false"/>
+        </sqlMapGenerator>
+
+        <!-- 生成mapxml对应client，也就是接口dao -->
+        <!-- targetPackage 和 targetProject：生成的 interface 文件的包和位置 -->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="${package.interface}" targetProject="${project}">
+            <!-- 针对 oracle 数据库的一个配置，是否把 schema 作为字包名 -->
+            <property name="enableSubPackages" value="false"/>
+        </javaClientGenerator>
+
+        <!-- table可以有多个,每个数据库中的表都可以写一个table -->
+        <!-- tableName表示要匹配的数据库表,也可以在tableName属性中通过使用%通配符来匹配所有数据库表,只有匹配的表才会自动生成文件 -->
+        <table tableName="sys_role"
+               domainObjectName="SysRole"
+               enableCountByExample="false"
+               enableUpdateByExample="false"
+               enableDeleteByExample="false"
+               enableSelectByExample="false"
+               selectByExampleQueryId="false">
+            <generatedKey column="role_id" sqlStatement="select replace(uuid(),'-','')"/>
+        </table>
+    </context>
+</generatorConfiguration>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!--配置规则类的位置-->
+    <conversionRule conversionWord="ip" converterClass="com.github.bus.common.configure.LogIpConfig"/>
+    <springProperty scop="context" name="spring.application.name" source="spring.application.name"
+                    defaultValue="bus-admin"/>
+    <property name="LOG_NAME" value="logs/${spring.application.name}"/>
+
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>
+                <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符-->
+                %d{yyyy-MM-dd HH:mm:ss.SSS} [${LOG_NAME}-%ip] %-5level %logger{50} - %msg%n
+            </pattern>
+        </layout>
+    </appender>
+
+    <appender name="debug" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--日志文件输出的文件名-->
+        <file>${LOG_NAME}/debug.log</file>
+        <rollingPolicy
+                class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_NAME}/%d{yyyy-MM}/debug.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <!--日志文件最大的大小-->
+            <maxFileSize>30MB</maxFileSize>
+            <!--保留30天日志文件-->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>
+                <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符-->
+                %d{yyyy-MM-dd HH:mm:ss.SSS} [${LOG_NAME}-%ip-%class] %-5level %logger{50} - %msg%n
+            </pattern>
+        </layout>
+    </appender>
+
+    <appender name="error" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--日志文件输出的文件名-->
+        <file>${LOG_NAME}/error.log</file>
+        <rollingPolicy
+                class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_NAME}/%d{yyyy-MM}/error.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <!--日志文件最大的大小-->
+            <maxFileSize>30MB</maxFileSize>
+            <!--保留30天日志文件-->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>
+                <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符-->
+                %d{yyyy-MM-dd HH:mm:ss.SSS} [${LOG_NAME}-%ip-%class] %-5level %logger{50} - %msg%n
+            </pattern>
+        </layout>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="console"/>
+        <appender-ref ref="debug"/>
+        <appender-ref ref="error"/>
+    </root>
+</configuration>

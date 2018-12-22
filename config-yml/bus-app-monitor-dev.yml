@@ -1,0 +1,18 @@
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: ALWAYS
+spring:
+  security:
+    user:
+      name: "user"
+      password: "password"
+eureka:
+  instance:
+    metadata-map:
+      user.name: ${spring.security.user.name}         #These two are needed so that the configurer
+      user.password: ${spring.security.user.password} #can access the protected client endpoints

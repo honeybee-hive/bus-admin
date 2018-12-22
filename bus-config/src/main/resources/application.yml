@@ -1,0 +1,17 @@
+server:
+  port: 8762
+spring:
+  application:
+    name: bus-config
+  cloud:
+    config:
+      server:
+        git:
+          uri: http://192.168.0.123:7997/malt/bus-admin.git     # https://github.com/honeybee-hive/bus-admin/   # 配置git仓库的地址
+          search-paths: /config-yml                              # git仓库地址下的相对地址，可以配置多个，用,分割。
+          username: config                             # git仓库的账号
+          password: config123                                  # git仓库的密码
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
